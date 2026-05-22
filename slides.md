@@ -1,129 +1,220 @@
 ---
 theme: seriph
-background: https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=1200
 title: MCP环境搭建与小红书MCP部署项目实战
-info: 完整流程与功能展示
 class: text-center
 transition: slide-left
-duration: 60min
+highlighter: shiki
 ---
 
 # MCP环境搭建与小红书MCP部署项目实战
 
+<div class="mt-8 text-xl text-pink-500">Model Context Protocol 实战课程</div>
+<div class="mt-12 opacity-60">探索AI模型与外部工具的连接之道</div>
+
+<style>
+:root {
+  --primary: #ec4899;
+  --secondary: #8b5cf6;
+  --accent: #06b6d4;
+}
+</style>
+
 ---
 
-# 目录
+## 📋 目录
 
-1. MCP概述与架构
-2. 环境准备与依赖安装
-3. MCP Server搭建
-4. 小红书工具开发
-5. 客户端集成
-6. 部署与运维
-7. 功能演示
+<div class="grid grid-cols-2 gap-4 mt-8">
+  <div class="p-4 bg-gradient-to-br from-pink-50 to-rose-50 rounded-xl border border-pink-200 hover:shadow-lg transition-shadow">
+    <span class="text-pink-500 font-bold text-xl">01</span>
+    <div class="mt-2 font-medium text-gray-700">MCP概述与架构</div>
+  </div>
+  <div class="p-4 bg-gradient-to-br from-purple-50 to-violet-50 rounded-xl border border-purple-200 hover:shadow-lg transition-shadow">
+    <span class="text-purple-500 font-bold text-xl">02</span>
+    <div class="mt-2 font-medium text-gray-700">环境准备与安装</div>
+  </div>
+  <div class="p-4 bg-gradient-to-br from-cyan-50 to-sky-50 rounded-xl border border-cyan-200 hover:shadow-lg transition-shadow">
+    <span class="text-cyan-500 font-bold text-xl">03</span>
+    <div class="mt-2 font-medium text-gray-700">MCP Server搭建</div>
+  </div>
+  <div class="p-4 bg-gradient-to-br from-pink-50 to-purple-50 rounded-xl border border-pink-200 hover:shadow-lg transition-shadow">
+    <span class="text-pink-500 font-bold text-xl">04</span>
+    <div class="mt-2 font-medium text-gray-700">小红书工具开发</div>
+  </div>
+  <div class="p-4 bg-gradient-to-br from-purple-50 to-cyan-50 rounded-xl border border-purple-200 hover:shadow-lg transition-shadow">
+    <span class="text-purple-500 font-bold text-xl">05</span>
+    <div class="mt-2 font-medium text-gray-700">客户端集成与部署</div>
+  </div>
+  <div class="p-4 bg-gradient-to-br from-cyan-50 to-pink-50 rounded-xl border border-cyan-200 hover:shadow-lg transition-shadow">
+    <span class="text-cyan-500 font-bold text-xl">06</span>
+    <div class="mt-2 font-medium text-gray-700">功能演示与总结</div>
+  </div>
+</div>
 
 ---
 
-# 什么是 MCP?
+## 🔗 什么是 MCP?
 
-**MCP (Model Context Protocol)**
+<div class="mt-6 text-center">
+  <span class="text-8xl">🔗</span>
+</div>
 
-是一种用于连接AI模型与外部工具的标准化协议
+<h2 class="text-3xl font-bold mt-6 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 bg-clip-text text-transparent">
+  MCP (Model Context Protocol)
+</h2>
+
+<p class="text-xl text-gray-600 mt-4">
+  用于连接AI模型与外部工具的标准化协议
+</p>
 
 ```mermaid
 graph LR
-    A[AI模型] -->|MCP协议| B[MCP Server]
+    A[AI模型] -.->|MCP协议| B[MCP Server]
     B -->|工具调用| C[小红书API]
-    B -->|工具调用| D[数据库]
+    B -->|工具调用| D[(数据库)]
     B -->|工具调用| E[其他服务]
     C -->|返回数据| B
     D -->|返回数据| B
     E -->|返回数据| B
-    B -->|上下文| A
+    B -.->|上下文| A
 ```
 
 ---
 
-# MCP核心价值
+## ✨ MCP核心价值
 
-| 特性 | 说明 |
-|------|------|
-| 🚀 能力扩展 | 让AI模型具备调用外部工具的能力 |
-| 🔗 标准接口 | 统一的工具调用协议 |
-| 🔒 安全可控 | 权限管理与执行隔离 |
-| 📦 插件化设计 | 工具可插拔，易于扩展 |
+<div class="grid grid-cols-2 gap-6 mt-6">
+  <div class="p-6 bg-gradient-to-r from-pink-50 to-pink-100 rounded-2xl border border-pink-200">
+    <div class="text-4xl text-center mb-4">🚀</div>
+    <h3 class="font-bold text-gray-800 text-center">能力扩展</h3>
+    <p class="text-sm text-gray-600 mt-2 text-center">让AI模型具备调用外部工具的能力</p>
+  </div>
+  
+  <div class="p-6 bg-gradient-to-r from-purple-50 to-purple-100 rounded-2xl border border-purple-200">
+    <div class="text-4xl text-center mb-4">🔗</div>
+    <h3 class="font-bold text-gray-800 text-center">标准接口</h3>
+    <p class="text-sm text-gray-600 mt-2 text-center">统一的工具调用协议</p>
+  </div>
+  
+  <div class="p-6 bg-gradient-to-r from-cyan-50 to-cyan-100 rounded-2xl border border-cyan-200">
+    <div class="text-4xl text-center mb-4">🔒</div>
+    <h3 class="font-bold text-gray-800 text-center">安全可控</h3>
+    <p class="text-sm text-gray-600 mt-2 text-center">权限管理与执行隔离</p>
+  </div>
+  
+  <div class="p-6 bg-gradient-to-r from-orange-50 to-orange-100 rounded-2xl border border-orange-200">
+    <div class="text-4xl text-center mb-4">📦</div>
+    <h3 class="font-bold text-gray-800 text-center">插件化设计</h3>
+    <p class="text-sm text-gray-600 mt-2 text-center">工具可插拔，易于扩展</p>
+  </div>
+</div>
 
 ---
 
-# MCP架构详解
+## 🏗️ MCP架构详解
 
 ```mermaid
 graph TB
-    subgraph 服务端
+    subgraph 服务端层
         A[MCP Server]
         B[Tool Registry]
         C[Security Layer]
         D[Context Manager]
     end
+    
     subgraph 工具层
         E[小红书工具]
-        F[数据库工具]
+        F[(数据库工具)]
         G[HTTP工具]
     end
-    subgraph 客户端
+    
+    subgraph 客户端层
         H[MCP Client SDK]
         I[AI模型]
     end
+    
     H -->|协议调用| A
     A -->|注册| B
     A -->|验证| C
     A -->|执行| E
     A -->|执行| F
     A -->|执行| G
+    
+    style A fill:#fdf2f8,stroke:#ec4899,stroke-width:2px
+    style E fill:#ede9fe,stroke:#8b5cf6,stroke-width:2px
+    style I fill:#ecfeff,stroke:#06b6d4,stroke-width:2px
+```
+
+<div class="mt-6 grid grid-cols-3 gap-4">
+  <div class="text-center p-4 bg-pink-50 rounded-xl">
+    <div class="text-3xl">🌐</div>
+    <div class="mt-2 font-medium text-gray-700">服务端</div>
+  </div>
+  <div class="text-center p-4 bg-purple-50 rounded-xl">
+    <div class="text-3xl">🛠️</div>
+    <div class="mt-2 font-medium text-gray-700">工具层</div>
+  </div>
+  <div class="text-center p-4 bg-cyan-50 rounded-xl">
+    <div class="text-3xl">🤖</div>
+    <div class="mt-2 font-medium text-gray-700">客户端</div>
+  </div>
+</div>
+
+---
+
+## 📦 第一阶段：环境准备
+
+### 系统要求检查
+
+<div class="grid grid-cols-2 gap-4 mt-6">
+  <div class="p-4 bg-green-50 rounded-xl border border-green-200 flex items-center gap-3">
+    <span class="text-green-500 text-2xl">✓</span>
+    <div>
+      <div class="font-bold text-gray-800">Node.js</div>
+      <div class="text-sm text-gray-600">版本 >= 18.0.0</div>
+    </div>
+  </div>
+  
+  <div class="p-4 bg-green-50 rounded-xl border border-green-200 flex items-center gap-3">
+    <span class="text-green-500 text-2xl">✓</span>
+    <div>
+      <div class="font-bold text-gray-800">npm</div>
+      <div class="text-sm text-gray-600">版本 >= 9.0.0</div>
+    </div>
+  </div>
+  
+  <div class="p-4 bg-green-50 rounded-xl border border-green-200 flex items-center gap-3">
+    <span class="text-green-500 text-2xl">✓</span>
+    <div>
+      <div class="font-bold text-gray-800">Git</div>
+      <div class="text-sm text-gray-600">版本 >= 2.30</div>
+    </div>
+  </div>
+  
+  <div class="p-4 bg-yellow-50 rounded-xl border border-yellow-200 flex items-center gap-3">
+    <span class="text-yellow-500 text-2xl">⚠</span>
+    <div>
+      <div class="font-bold text-gray-800">Python</div>
+      <div class="text-sm text-gray-600">版本 >= 3.10 (可选)</div>
+    </div>
+  </div>
+</div>
+
+```bash {all}
+# 检查命令
+node -v    # v20.10.0
+npm -v     # 10.2.3
+git --version  # git version 2.42.0
 ```
 
 ---
 
-# 第一阶段: 环境准备
+## 🚀 第二阶段：创建项目
 
-## 系统要求检查
+### 项目初始化
 
-```bash
-# 检查Node.js版本
-node -v  # >= 18.0.0
-
-# 检查npm版本
-npm -v   # >= 9.0.0
-
-# 检查Git
-git --version  # >= 2.30
-```
-
-## 安装依赖
-
-```bash
-# 安装nvm版本管理
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-
-# 安装Node.js 20
-nvm install 20
-nvm use 20
-
-# 验证安装
-node -v  # v20.x.x
-```
-
----
-
-# 第二阶段: 创建项目
-
-## 创建目录结构
-
-```bash
+```bash {all}
 mkdir mcp-xiaohongshu-project
 cd mcp-xiaohongshu-project
-
-# 初始化npm项目
 npm init -y
 
 # 安装核心依赖
@@ -133,27 +224,26 @@ npm install @mcp/core @mcp/server express cors
 npm install -D typescript ts-node @types/node @types/express @types/cors
 ```
 
-## 项目结构
+### 项目结构
 
-```
+<div class="p-6 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border border-purple-200 mt-6">
+  <div class="font-bold text-gray-800 mb-3">📁 项目结构</div>
+  <pre class="text-sm bg-white/70 rounded-lg p-4 overflow-x-auto">
 mcp-xiaohongshu-project/
 ├── src/
-│   ├── tools/          # 工具实现
-│   │   └── xiaohongshu.ts
-│   ├── server/         # 服务端
-│   │   └── index.ts
-│   ├── client/         # 客户端
-│   │   └── index.ts
-│   └── config/         # 配置
-│       └── mcp.ts
-├── package.json
-├── tsconfig.json
-└── .env
-```
+│   ├── tools/          # 工具实现（小红书工具等）
+│   ├── server/         # MCP服务端配置
+│   ├── client/         # 客户端SDK封装
+│   └── config/         # 配置文件
+├── package.json        # 项目依赖配置
+├── tsconfig.json       # TypeScript配置
+└── .env               # 环境变量
+  </pre>
+</div>
 
 ---
 
-# 第三阶段: 配置TypeScript
+## ⚙️ 第三阶段：配置 TypeScript
 
 创建 `tsconfig.json`:
 
@@ -175,295 +265,85 @@ mcp-xiaohongshu-project/
 }
 ```
 
----
-
-# 第四阶段: 配置MCP Server
-
-创建 `src/config/mcp.ts`:
-
-```typescript
-import { defineConfig } from '@mcp/server'
-
-export default defineConfig({
-  server: {
-    port: parseInt(process.env.MCP_PORT || '8080'),
-    host: process.env.MCP_HOST || 'localhost',
-  },
-  security: {
-    apiKeys: process.env.MCP_API_KEYS?.split(',') || [],
-    allowedOrigins: ['http://localhost:3000', 'http://localhost:5173'],
-  },
-  tools: {
-    scanDir: './src/tools',
-    autoReload: process.env.NODE_ENV !== 'production',
-  },
-  logging: {
-    level: process.env.LOG_LEVEL || 'info',
-  }
-})
-```
+<div class="mt-6 p-4 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-xl border border-cyan-200">
+  <div class="flex items-center gap-2 text-cyan-600">
+    <span class="text-xl">💡</span>
+    <span class="font-medium">小贴士</span>
+  </div>
+  <p class="text-sm text-gray-600 mt-2">
+    使用 ES2022 目标版本可以充分利用现代 JavaScript 特性，同时保持良好的兼容性。strict 模式确保代码质量。
+  </p>
+</div>
 
 ---
 
-# 第五阶段: 实现小红书工具
+## 🔍 第四阶段：实现小红书工具
 
-创建 `src/tools/xiaohongshu.ts`:
+### 工具列表
 
-```typescript
-import { defineTool } from '@mcp/core'
-
-export const searchNotes = defineTool({
-  name: 'xiaohongshu_search',
-  description: '搜索小红书笔记',
-  parameters: {
-    keyword: { type: 'string', required: true },
-    page: { type: 'number', default: 1, minimum: 1 },
-    limit: { type: 'number', default: 10, minimum: 1, maximum: 50 },
-  },
-  async execute({ keyword, page, limit }) {
-    const results = await simulateSearch(keyword, page, limit)
-    return { type: 'object', value: results }
-  }
-})
-
-export const getNoteDetail = defineTool({
-  name: 'xiaohongshu_get_note',
-  description: '获取笔记详情',
-  parameters: {
-    noteId: { type: 'string', required: true, description: '笔记ID' },
-  },
-  async execute({ noteId }) {
-    const detail = await fetchNoteDetail(noteId)
-    return { type: 'object', value: detail }
-  }
-})
-
-export const publishNote = defineTool({
-  name: 'xiaohongshu_publish',
-  description: '发布小红书笔记',
-  parameters: {
-    title: { type: 'string', required: true },
-    content: { type: 'string', required: true },
-    images: { type: 'array', items: { type: 'string' }, default: [] },
-    tags: { type: 'array', items: { type: 'string' }, default: [] },
-  },
-  async execute({ title, content, images, tags }) {
-    const result = await simulatePublish(title, content, images, tags)
-    return { type: 'object', value: result }
-  }
-})
-
-export const getUserInfo = defineTool({
-  name: 'xiaohongshu_get_user',
-  description: '获取用户信息',
-  parameters: {
-    userId: { type: 'string', required: true },
-  },
-  async execute({ userId }) {
-    const user = await fetchUserInfo(userId)
-    return { type: 'object', value: user }
-  }
-})
-
-export const getHotTopics = defineTool({
-  name: 'xiaohongshu_hot_topics',
-  description: '获取热门话题',
-  parameters: {
-    limit: { type: 'number', default: 10, minimum: 1, maximum: 20 },
-  },
-  async execute({ limit }) {
-    const topics = await fetchHotTopics(limit)
-    return { type: 'object', value: topics }
-  }
-})
-
-export const likeNote = defineTool({
-  name: 'xiaohongshu_like',
-  description: '点赞笔记',
-  parameters: {
-    noteId: { type: 'string', required: true },
-  },
-  async execute({ noteId }) {
-    const result = await simulateLike(noteId)
-    return { type: 'object', value: result }
-  }
-})
-
-export const commentNote = defineTool({
-  name: 'xiaohongshu_comment',
-  description: '评论笔记',
-  parameters: {
-    noteId: { type: 'string', required: true },
-    content: { type: 'string', required: true },
-  },
-  async execute({ noteId, content }) {
-    const result = await simulateComment(noteId, content)
-    return { type: 'object', value: result }
-  }
-})
-
-export const followUser = defineTool({
-  name: 'xiaohongshu_follow',
-  description: '关注用户',
-  parameters: {
-    userId: { type: 'string', required: true },
-  },
-  async execute({ userId }) {
-    const result = await simulateFollow(userId)
-    return { type: 'object', value: result }
-  }
-})
-
-export const collectNote = defineTool({
-  name: 'xiaohongshu_collect',
-  description: '收藏笔记',
-  parameters: {
-    noteId: { type: 'string', required: true },
-  },
-  async execute({ noteId }) {
-    const result = await simulateCollect(noteId)
-    return { type: 'object', value: result }
-  }
-})
-
-export const getRecommendations = defineTool({
-  name: 'xiaohongshu_recommend',
-  description: '获取推荐笔记',
-  parameters: {
-    limit: { type: 'number', default: 10, minimum: 1, maximum: 30 },
-  },
-  async execute({ limit }) {
-    const results = await fetchRecommendations(limit)
-    return { type: 'object', value: results }
-  }
-})
-```
+<div class="grid grid-cols-2 gap-4">
+  <div class="p-4 bg-gradient-to-br from-pink-50 to-rose-50 rounded-xl border border-pink-200">
+    <div class="font-bold text-pink-600">🔍 xiaohongshu_search</div>
+    <div class="text-sm text-gray-600 mt-1">搜索小红书笔记</div>
+  </div>
+  <div class="p-4 bg-gradient-to-br from-purple-50 to-violet-50 rounded-xl border border-purple-200">
+    <div class="font-bold text-purple-600">📄 xiaohongshu_get_note</div>
+    <div class="text-sm text-gray-600 mt-1">获取笔记详情</div>
+  </div>
+  <div class="p-4 bg-gradient-to-br from-cyan-50 to-sky-50 rounded-xl border border-cyan-200">
+    <div class="font-bold text-cyan-600">📝 xiaohongshu_publish</div>
+    <div class="text-sm text-gray-600 mt-1">发布小红书笔记</div>
+  </div>
+  <div class="p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border border-green-200">
+    <div class="font-bold text-green-600">👤 xiaohongshu_get_user</div>
+    <div class="text-sm text-gray-600 mt-1">获取用户信息</div>
+  </div>
+  <div class="p-4 bg-gradient-to-br from-orange-50 to-amber-50 rounded-xl border border-orange-200">
+    <div class="font-bold text-orange-600">🔥 xiaohongshu_hot_topics</div>
+    <div class="text-sm text-gray-600 mt-1">获取热门话题</div>
+  </div>
+  <div class="p-4 bg-gradient-to-br from-rose-50 to-pink-50 rounded-xl border border-rose-200">
+    <div class="font-bold text-rose-600">👍 xiaohongshu_like</div>
+    <div class="text-sm text-gray-600 mt-1">点赞笔记</div>
+  </div>
+</div>
 
 ---
 
-# 小红书MCP工具功能总览
+## 🗺️ 工具功能架构
 
 ```mermaid
 graph LR
-    A[小红书MCP工具] --> B[内容搜索]
+    A[小红书MCP工具集] --> B[内容搜索]
     A --> C[内容操作]
     A --> D[用户管理]
     A --> E[数据获取]
     
-    B --> B1[xiaohongshu_search]
-    B --> B2[xiaohongshu_recommend]
+    B -->|🔍| B1[search]
+    B -->|🎯| B2[recommend]
     
-    C --> C1[xiaohongshu_publish]
-    C --> C2[xiaohongshu_like]
-    C --> C3[xiaohongshu_comment]
-    C --> C4[xiaohongshu_collect]
+    C -->|📝| C1[publish]
+    C -->|👍| C2[like]
+    C -->|💬| C3[comment]
+    C -->|⭐| C4[collect]
     
-    D --> D1[xiaohongshu_get_user]
-    D --> D2[xiaohongshu_follow]
+    D -->|👤| D1[get_user]
+    D -->|❤️| D2[follow]
     
-    E --> E1[xiaohongshu_get_note]
-    E --> E2[xiaohongshu_hot_topics]
+    E -->|📄| E1[get_note]
+    E -->|🔥| E2[hot_topics]
+    
+    style B fill:#fdf2f8,stroke:#ec4899,stroke-width:2px
+    style C fill:#ede9fe,stroke:#8b5cf6,stroke-width:2px
+    style D fill:#ecfeff,stroke:#06b6d4,stroke-width:2px
+    style E fill:#fef3c7,stroke:#f59e0b,stroke-width:2px
 ```
 
 ---
 
-# 第六阶段: 启动服务
+## 🔗 第五阶段：客户端集成
 
-创建 `src/server/index.ts`:
-
-```typescript
-import { createServer } from '@mcp/server'
-import config from '../config/mcp'
-
-async function main() {
-  const server = await createServer(config)
-  
-  await server.listen({
-    port: config.server.port,
-    host: config.server.host,
-  })
-  
-  console.log(`\n🚀 MCP Server running on http://${config.server.host}:${config.server.port}`)
-  console.log(`📋 Registered tools: ${server.tools.map(t => t.name).join(', ')}`)
-}
-
-main().catch(console.error)
-```
-
-更新 `package.json`:
-
-```json
-{
-  "scripts": {
-    "start": "node dist/server/index.js",
-    "dev": "ts-node-dev src/server/index.ts",
-    "build": "tsc",
-    "test": "node --test"
-  }
-}
-```
-
----
-
-# 启动服务演示
-
-```bash
-# 开发模式运行
-npm run dev
-
-# 预期输出
-🚀 MCP Server running on http://localhost:8080
-📋 Registered tools: xiaohongshu_search, xiaohongshu_get_note, xiaohongshu_publish, xiaohongshu_get_user, xiaohongshu_hot_topics
-```
-
-```bash
-# 或编译后运行
-npm run build
-npm start
-```
-
----
-
-# API调用测试
-
-使用curl测试工具调用:
-
-```bash
-curl -X POST http://localhost:8080/v1/tools/execute \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "xiaohongshu_search",
-    "parameters": {
-      "keyword": "美食",
-      "page": 1,
-      "limit": 5
-    }
-  }'
-```
-
-响应结果:
-
-```json
-{
-  "success": true,
-  "result": {
-    "keyword": "美食",
-    "page": 1,
-    "limit": 5,
-    "total": 500,
-    "data": [
-      {"id": "1", "title": "美食入门指南", "likes": 1234},
-      {"id": "2", "title": "精选美食好物推荐", "likes": 5678}
-    ]
-  }
-}
-```
-
----
-
-# 客户端SDK集成
-
-创建 `src/client/index.ts`:
+### 客户端SDK封装
 
 ```typescript
 import { createClient } from '@mcp/core'
@@ -473,321 +353,163 @@ const client = createClient({
   apiKey: process.env.MCP_API_KEY,
 })
 
-export async function searchXiaohongshu(keyword: string, options?: {
-  page?: number
-  limit?: number
-}) {
+export async function searchNotes(keyword: string, options?: { page?: number; limit?: number }) {
   const result = await client.execute('xiaohongshu_search', {
-    keyword,
-    page: options?.page || 1,
+    keyword, 
+    page: options?.page || 1, 
     limit: options?.limit || 10,
   })
-  
-  if (!result.success) {
-    throw new Error(result.error?.message || '调用失败')
-  }
-  
-  return result.data
+  return result.success ? result.data : null
 }
 
-export async function getToolList() {
-  const result = await client.listTools()
-  return result.data
+export async function getHotTopics(limit?: number) {
+  const result = await client.execute('xiaohongshu_hot_topics', { limit: limit || 10 })
+  return result.success ? result.data : null
 }
 ```
 
 ---
 
-# 客户端使用示例
+## 🚢 部署方案
 
-```typescript
-import { searchXiaohongshu } from './client'
+<div class="grid grid-cols-2 gap-6">
+  <div class="p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl border border-green-200">
+    <div class="text-5xl text-center mb-4">🐳</div>
+    <h3 class="font-bold text-green-700 text-center mb-3">Docker部署</h3>
+    <pre class="text-xs bg-white/70 rounded-lg p-3 overflow-x-auto text-gray-600">
+# 创建Dockerfile
+FROM node:20-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY dist/ ./dist/
+EXPOSE 8080
+CMD ["node", "dist/server.js"]
 
-async function main() {
-  try {
-    const results = await searchXiaohongshu('旅行', { page: 1, limit: 5 })
-    console.log('搜索结果:', results)
-    
-    results.data.forEach((item: any) => {
-      console.log(`- ${item.title} (点赞: ${item.likes})`)
-    })
-  } catch (error) {
-    console.error('搜索失败:', error)
-  }
-}
-
-main()
-```
-
----
-
-# AI模型集成演示
-
-```typescript
-import { searchNotes, getHotTopics, getUserInfo, likeNote, commentNote, followUser, getRecommendations } from './client'
-
-async function aiResponse(prompt: string) {
-  if (prompt.includes('搜索小红书')) {
-    const keyword = prompt.replace('搜索小红书', '').trim()
-    const results = await searchNotes(keyword, { limit: 3 })
-    return `在小红书搜索「${keyword}」找到：\n\n` +
-      results.data.map((n: any) => `${n.title} (点赞: ${n.likes})`).join('\n')
-  }
+# 构建并运行
+docker build -t mcp-server .
+docker run -d -p 8080:8080 mcp-server
+    </pre>
+  </div>
   
-  if (prompt.includes('热门话题')) {
-    const topics = await getHotTopics(5)
-    return `当前热门话题 TOP5：\n\n` +
-      topics.data.map((t: any) => `${t.rank}. ${t.name} (热度: ${t.heat})`).join('\n')
-  }
-  
-  if (prompt.includes('推荐笔记')) {
-    const recs = await getRecommendations(5)
-    return `为您推荐：\n\n` +
-      recs.data.map((n: any) => `${n.title} (点赞: ${n.likes})`).join('\n')
-  }
-  
-  if (prompt.includes('用户信息')) {
-    const userId = prompt.match(/用户(\w+)/)?.[1] || 'user_001'
-    const user = await getUserInfo(userId)
-    return `用户信息：\n名称: ${user.name}\n粉丝: ${user.followers}\n笔记: ${user.notes}`
-  }
-  
-  if (prompt.includes('点赞笔记')) {
-    const noteId = prompt.match(/笔记(\w+)/)?.[1] || 'note_123'
-    const result = await likeNote(noteId)
-    return result.success ? '点赞成功！' : '点赞失败'
-  }
-  
-  if (prompt.includes('评论笔记')) {
-    const result = await commentNote('note_123', prompt.replace('评论笔记', '').trim())
-    return result.success ? '评论成功！' : '评论失败'
-  }
-  
-  if (prompt.includes('关注用户')) {
-    const userId = prompt.match(/关注(\w+)/)?.[1] || 'user_001'
-    const result = await followUser(userId)
-    return result.success ? '关注成功！' : '关注失败'
-  }
-  
-  return `我可以帮您完成以下操作：
-- 搜索小红书内容（如：搜索小红书美食）
-- 查看热门话题
-- 获取推荐笔记
-- 获取用户信息
-- 点赞/评论/关注操作`
-}
-
-aiResponse('搜索小红书旅行').then(console.log)
-aiResponse('热门话题').then(console.log)
-```
-
----
-
-# 部署方案
-
-## PM2进程管理
-
-```bash
+  <div class="p-6 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl border border-amber-200">
+    <div class="text-5xl text-center mb-4">🚀</div>
+    <h3 class="font-bold text-amber-700 text-center mb-3">PM2管理</h3>
+    <pre class="text-xs bg-white/70 rounded-lg p-3 overflow-x-auto text-gray-600">
+# 安装PM2
 npm install -g pm2
 
-pm2 start ecosystem.config.js
-```
-
-`ecosystem.config.js`:
-
-```javascript
+# 配置ecosystem.config.js
 module.exports = {
   apps: [{
     name: 'mcp-server',
-    script: './dist/server/index.js',
+    script: 'dist/server.js',
     instances: 'max',
-    exec_mode: 'cluster',
-    env: { NODE_ENV: 'production' },
-    env_production: { NODE_ENV: 'production' }
+    exec_mode: 'cluster'
   }]
 }
-```
+
+# 启动服务
+pm2 start ecosystem.config.js
+pm2 monit
+    </pre>
+  </div>
+</div>
 
 ---
 
-# Docker容器化部署
-
-创建 `Dockerfile`:
-
-```dockerfile
-FROM node:20-alpine
-
-WORKDIR /app
-
-COPY package*.json ./
-RUN npm ci --only=production
-
-COPY . .
-RUN npm run build
-
-ENV NODE_ENV=production
-EXPOSE 8080
-
-CMD ["node", "dist/server/index.js"]
-```
-
-创建 `docker-compose.yml`:
-
-```yaml
-version: '3.8'
-services:
-  mcp-server:
-    build: .
-    ports:
-      - "8080:8080"
-    env_file:
-      - .env.production
-    restart: unless-stopped
-```
-
----
-
-# 监控与日志
-
-## 集成日志系统
+## 🎯 功能演示
 
 ```typescript
-import pino from 'pino'
+import { searchNotes, getHotTopics, likeNote, followUser } from './client'
 
-const logger = pino({
-  level: process.env.LOG_LEVEL || 'info',
-  transport: {
-    target: 'pino-pretty',
-    options: { colorize: true }
-  }
-})
+async function demoAllFeatures() {
+  console.log('=== 1. 搜索笔记 ===')
+  const searchResults = await searchNotes('旅行攻略', { limit: 3 })
+  console.log('找到:', searchResults.data.length, '条笔记')
 
-logger.info('MCP Server started', { port: 8080 })
-logger.error('Tool execution failed', { error: err })
-```
+  console.log('\n=== 2. 获取热门话题 ===')
+  const topics = await getHotTopics(5)
+  topics.data.forEach(t => console.log(`${t.rank}. ${t.name}`))
 
-## 健康检查端点
+  console.log('\n=== 3. 点赞笔记 ===')
+  await likeNote('note_123')
+  console.log('点赞成功!')
 
-```typescript
-server.get('/health', (req, res) => {
-  res.json({
-    status: 'ok',
-    uptime: process.uptime(),
-    timestamp: Date.now()
-  })
-})
-```
-
----
-
-# 安全最佳实践
-
-## API Key管理
-
-```typescript
-// 使用环境变量
-const apiKeys = process.env.MCP_API_KEYS?.split(',') || []
-
-// 验证中间件
-function validateApiKey(req: Request, res: Response, next: NextFunction) {
-  const apiKey = req.headers['x-api-key']
-  
-  if (!apiKey || !apiKeys.includes(apiKey as string)) {
-    return res.status(401).json({ error: 'Unauthorized' })
-  }
-  
-  next()
-}
-```
-
-## 输入验证
-
-```typescript
-import { z } from 'zod'
-
-const schema = z.object({
-  keyword: z.string().min(1).max(100),
-  page: z.number().int().min(1).max(100),
-  limit: z.number().int().min(1).max(50),
-})
-
-const result = schema.safeParse(input)
-```
-
----
-
-# 功能演示
-
-## 演示场景
-
-```mermaid
-sequenceDiagram
-    participant User as 用户
-    participant Model as AI助手
-    participant MCP as MCP Server
-    participant Tool as 小红书工具
-    
-    User->>Model: 帮我搜索小红书美食推荐
-    Model->>MCP: POST /v1/tools/execute
-    Note over MCP: {"name": "xiaohongshu_search", "parameters": {"keyword": "美食"}}
-    MCP->>Tool: 执行搜索
-    Tool-->>MCP: 返回搜索结果
-    MCP-->>Model: {"success": true, "data": [...]}
-    Model-->>User: 根据您的需求，为您找到以下美食推荐...
-```
-
----
-
-# 功能演示代码
-
-```typescript
-async function demoSearch() {
-  console.log('=== 小红书MCP工具演示 ===')
-  
-  const results = await searchXiaohongshu('旅行攻略', { page: 1, limit: 3 })
-  
-  console.log('\n搜索关键词:', results.keyword)
-  console.log('搜索结果:', results.total, '条')
-  console.log('\n=== 推荐内容 ===')
-  
-  results.data.forEach((item: any, index: number) => {
-    console.log(`${index + 1}. ${item.title}`)
-    console.log(`   点赞: ${item.likes} | 评论: ${item.comments}`)
-  })
-  
-  console.log('\n=== 演示完成 ===')
+  console.log('\n=== 4. 关注用户 ===')
+  await followUser('user_456')
+  console.log('关注成功!')
 }
 
-demoSearch()
+demoAllFeatures()
 ```
 
 ---
 
-# 项目总结
+## 📊 项目总结
 
-## 已完成工作
+### ✅ 已完成工作
 
-✅ **环境搭建** - Node.js + TypeScript  
-✅ **MCP Server配置** - 端口、安全、工具扫描  
-✅ **小红书工具实现** - 搜索功能  
-✅ **客户端SDK** - 封装调用接口  
-✅ **部署方案** - PM2 + Docker  
-✅ **监控日志** - 健康检查、日志记录  
-
-## 扩展方向
-
-🚀 添加更多工具（发布笔记、数据分析）  
-🔄 集成更多AI模型平台  
-📊 添加可视化仪表盘  
-🔒 加强安全防护层  
+<div class="grid grid-cols-3 gap-4 mt-6">
+  <div class="p-4 bg-white/20 backdrop-blur-sm rounded-xl text-center">
+    <div class="text-3xl">✅</div>
+    <div class="mt-2 font-medium">环境搭建</div>
+  </div>
+  <div class="p-4 bg-white/20 backdrop-blur-sm rounded-xl text-center">
+    <div class="text-3xl">✅</div>
+    <div class="mt-2 font-medium">MCP Server配置</div>
+  </div>
+  <div class="p-4 bg-white/20 backdrop-blur-sm rounded-xl text-center">
+    <div class="text-3xl">✅</div>
+    <div class="mt-2 font-medium">小红书工具开发</div>
+  </div>
+  <div class="p-4 bg-white/20 backdrop-blur-sm rounded-xl text-center">
+    <div class="text-3xl">✅</div>
+    <div class="mt-2 font-medium">客户端SDK封装</div>
+  </div>
+  <div class="p-4 bg-white/20 backdrop-blur-sm rounded-xl text-center">
+    <div class="text-3xl">✅</div>
+    <div class="mt-2 font-medium">部署方案</div>
+  </div>
+  <div class="p-4 bg-white/20 backdrop-blur-sm rounded-xl text-center">
+    <div class="text-3xl">✅</div>
+    <div class="mt-2 font-medium">安全防护</div>
+  </div>
+</div>
 
 ---
 
-# 谢谢观看!
+## 🔮 未来扩展
 
-**项目地址**: https://github.com/example/mcp-xiaohongshu  
-**文档地址**: https://docs.example.com/mcp  
-
-如有问题，请随时联系！
+<div class="grid grid-cols-3 gap-4 mt-6">
+  <div class="p-6 bg-gradient-to-br from-pink-50 to-rose-50 rounded-xl border border-pink-200 hover:shadow-lg transition-shadow">
+    <div class="text-4xl text-center mb-3">🚀</div>
+    <h3 class="font-bold text-gray-800 text-center">扩展工具</h3>
+    <p class="text-sm text-gray-600 mt-2 text-center">发布笔记、数据分析、批量操作</p>
+  </div>
+  <div class="p-6 bg-gradient-to-br from-purple-50 to-violet-50 rounded-xl border border-purple-200 hover:shadow-lg transition-shadow">
+    <div class="text-4xl text-center mb-3">🔄</div>
+    <h3 class="font-bold text-gray-800 text-center">模型集成</h3>
+    <p class="text-sm text-gray-600 mt-2 text-center">对接更多AI平台，实现智能交互</p>
+  </div>
+  <div class="p-6 bg-gradient-to-br from-cyan-50 to-sky-50 rounded-xl border border-cyan-200 hover:shadow-lg transition-shadow">
+    <div class="text-4xl text-center mb-3">📊</div>
+    <h3 class="font-bold text-gray-800 text-center">可视化</h3>
+    <p class="text-sm text-gray-600 mt-2 text-center">仪表盘、监控面板、数据报表</p>
+  </div>
+</div>
 
 ---
+
+# 🎉 谢谢观看!
+
+## MCP环境搭建与小红书MCP部署项目实战
+
+<div class="mt-8 flex justify-center gap-8 text-lg opacity-80">
+  <a href="https://mcp.dev" target="_blank" class="hover:text-pink-500 transition-colors">📖 官方文档</a>
+  <a href="https://github.com" target="_blank" class="hover:text-purple-500 transition-colors">💻 代码仓库</a>
+</div>
+
+<div class="mt-8 text-sm opacity-60">
+  如有问题，请随时联系！
+</div>
