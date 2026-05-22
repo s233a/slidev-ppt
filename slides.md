@@ -166,6 +166,10 @@ mcp-xiaohongshu-project/
 
 ## 🔍 第四阶段：实现小红书工具
 
+### 小红书平台首页
+
+![小红书首页](https://aka.doubaocdn.com/s/V4r01wSo1P)
+
 ### 工具列表
 
 | 工具名称 | 功能描述 | 分类 |
@@ -235,6 +239,10 @@ export async function getHotTopics(limit?: number) {
 ---
 
 ## 🚢 部署方案
+
+### 部署架构
+
+![部署架构](https://neeko-copilot.bytedance.net/api/text_to_image?prompt=docker%20container%20deployment%20architecture%20cloud%20infrastructure%20dark%20theme&image_size=landscape_16_9)
 
 ### Docker部署
 
